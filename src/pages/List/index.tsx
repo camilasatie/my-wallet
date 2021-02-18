@@ -5,18 +5,19 @@ import SelectInput from '../../components/SelectInput';
 
 import * as S from './styles';
 
-const Dashboard: React.FC = () => {
-
+const List: React.FC = () => { 
+  
   const options = [
     {value: 'Item', label: 'Item'}
   ]
+
   return (
     <S.Container>
-      <ContentHeader title="Dashboard" lineColor="#d50100">
-        <SelectInput options={options}/>
+      <ContentHeader title="Saídas" lineColor="#F7931B">
+        <SelectInput options={options} />
       </ContentHeader>
     </S.Container>
   );
 }
 
-export default Dashboard;
+export default List;
