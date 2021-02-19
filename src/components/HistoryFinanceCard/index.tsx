@@ -10,10 +10,10 @@ interface IHistoryFinanceCardProps {
 }
 
 const HistoryFinanceCard: React.FC<IHistoryFinanceCardProps> = ({ 
-  cardColor, tagColor, title, subtitle, amount
+  tagColor, title, subtitle, amount
 }) => {
   return (
-    <S.Container color={cardColor}>
+    <S.Container>
       <S.Tag color={tagColor} />
       <div>
         <span>{title}</span>
