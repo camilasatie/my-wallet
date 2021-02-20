@@ -11,7 +11,7 @@ export const Container = styled.li`
   justify-content: space-between;
   align-items: center;
   list-style: none;
-  border-radius: 5px;
+  border-radius: 10px;
   margin: 10px 0;
   padding: 12px 10px;
 
@@ -31,12 +31,17 @@ export const Container = styled.li`
     
     padding-left: 10px;
   }
+
+  > div span {
+    font-weight: 500;
+    font-size: 20px;
+  }
 `;
 
 export const Tag = styled.div`
   position: absolute;
   left: 0; 
-  width: 10px;
+  width: 12px;
   height: 60%;
   background-color: ${props => props.color};
 
