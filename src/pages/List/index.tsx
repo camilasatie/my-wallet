@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
+import { v4 as uuid_v4 } from "uuid";
 
 import ContentHeader from '../../components/ContentHeader';
 import SelectInput from '../../components/SelectInput';
@@ -8,6 +9,7 @@ import gains from '../../repositories/gains';
 import expenses from '../../repositories/expenses';
 import formatCurrency from '../../utils/formatCurrency';
 import formatDate from '../../utils/formatDate';
+import listOfMonths from '../../utils/months';
 
 import * as S from './styles';
 
@@ -33,6 +35,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
   const [data, setData] = useState<IData[]>([]);
   const [monthSelected, setMonthSelected] = useState<string>(String(new Date().getMonth() + 1));
   const [yearSelected, setYearSelected] = useState<string>(String(new Date().getFullYear()));
+  const [selectedFrequency, setSelectedFrequency] = useState(['recorrente', 'eventual']);
 
   const { type } = match.params;
 
@@ -48,20 +51,44 @@ const List: React.FC<IRouteParams> = ({ match }) => {
       : expenses;
   },[type]);
 
-  // Refatorar os dois arrays abaixo. Info precisa vir de acordo com os lançamentos
-  const months = [
-    {value: 7, label: 'Julho'},
-    {value: 8, label: 'Agosto'},
-    {value: 2, label: 'Fevereiro'},
-    {value: 9, label: 'Setembro'},
-  ];
+  const months = useMemo(() => {
+    return listOfMonths.map((month, index) => {
+      return {
+        value: index + 1,
+        label: month,
+      }
+    });    
+  },[]);
 
-  const years = [
-    {value: 2021, label: 2021},
-    {value: 2020, label: 2020},
-    {value: 2019, label: 2019},
-    {value: 2018, label: 2018},
-  ];
+  const years = useMemo(() => {
+    let uniqueYears: number[] = [];
+
+    listData.forEach(item => {
+      const date = new Date(item.date);
+      const year = date.getFullYear();
+
+      if(!uniqueYears.includes(year)) {
+        uniqueYears.push(year);
+      }
+    });
+
+    return uniqueYears.map(year => {
+      return {
+        value: year,
+        label: year,
+      }
+    });
+
+  },[listData]);
+
+  const handleFrequencyClick = (frequency: string) => {
+    const alreadySelected = selectedFrequency.findIndex(item => item === frequency);
+    if(alreadySelected >= 0) {
+      console.log('Já está selecionado')
+    } else {
+      console.log('Frequencia selecionado agora')
+    }
+  }
 
   useEffect(() => {
     const filteredData = listData.filter(item => {
@@ -74,7 +101,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
 
     const formattedData = filteredData.map(item => {
       return {
-        id: String(new Date().getTime() + item.amount),
+        id: uuid_v4(),
         description: item.description,
         amountFormatted: formatCurrency(Number(item.amount)),
         type: item.type,
@@ -82,7 +109,6 @@ const List: React.FC<IRouteParams> = ({ match }) => {
         dateFormatted: formatDate(item.date),
         tagColor: item.frequency === 'recorrente' ? '#4E41F0' : '#E44C4E',
       }
-
     })
 
     setData(formattedData)
@@ -107,12 +133,14 @@ const List: React.FC<IRouteParams> = ({ match }) => {
         <button 
           type="button"
           className="tag-filter tag-filter-recurrent"
+          onClick={() => handleFrequencyClick('recorrente')}
         >
           Recorrentes
         </button>
         <button 
           type="button"
           className="tag-filter tag-filter-eventual"
+          onClick={() => handleFrequencyClick('eventual')}
         >
           Eventuais
         </button>

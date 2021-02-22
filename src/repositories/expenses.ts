@@ -33,7 +33,7 @@ export default [
   {"description":"Plano de Saúde",        "amount":"300.00","type":"saída","frequency":"recorrente","date":"2020-05-23"},
   {"description":"Compras do mês",        "amount":"540.00","type":"saída","frequency":"recorrente","date":"2020-05-25"},
   {"description":"Parcela do Celular 4/5","amount":"150.99","type":"saída","frequency":"eventual",  "date":"2020-05-26"},
-  {"description":"Blusa Iron Man",        "amount":"150.00","type":"saída","frequency":"eventual",  "date":"2020-01-23"},
+  {"description":"Blusa Iron Man",        "amount":"150.00","type":"saída","frequency":"eventual",  "date":"2020-05-23"},
   {"description":"Energia elétrica",      "amount":"200.00","type":"saída","frequency":"recorrente","date":"2020-06-10"},
   {"description":"Água",                  "amount":"150.00","type":"saída","frequency":"recorrente","date":"2020-06-15"},
   {"description":"Telefone",              "amount":"99.99", "type":"saída","frequency":"recorrente","date":"2020-06-23"},
