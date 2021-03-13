@@ -10,7 +10,7 @@ import gains from '../../repositories/gains';
 import listOfMonths from '../../utils/months';
 
 import ImgHappy from '../../assets/happy.svg';
-import ImgSady from '../../assets/sady.svg'
+import ImgSad from '../../assets/sad.svg'
 
 import * as S from './styles';
 
@@ -48,12 +48,83 @@ const Dashboard: React.FC = () => {
 
   },[]);
 
+  const totalGains = useMemo(() => {
+    let total: number = 0;
+
+    gains.forEach(item => {
+      const date = new Date(item.date);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+
+      if(month === monthSelected && year === yearSelected) {
+        try {
+          total += Number(item.amount)
+        } catch {
+          throw new Error('Invalid amount. Amount must a number.')
+        }
+      }
+    });
+
+    return total;
+  }, [monthSelected, yearSelected]);
+
+  const totalExpenses = useMemo(() => {
+    let total: number = 0;
+
+    expenses.forEach(item => {
+      const date = new Date(item.date);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+
+      if(month === monthSelected && year === yearSelected) {
+        try {
+          total += Number(item.amount)
+        } catch {
+          throw new Error('Invalid amount. Amount must a number.')
+        }
+      }
+    });
+
+    return total;
+  }, [monthSelected, yearSelected]);
+
+  const totalBalance = useMemo(() => {
+    return totalGains - totalExpenses;
+  }, [totalGains, totalExpenses]);
+
+  const message = useMemo(() => {
+    if(totalBalance < 0) {
+      return {
+        title: 'Que triste!',
+        description: 'Neste mês, você gastou mais do que deveria',
+        footerText: 'Verifique seus gastos e tente reduzir gastos desnecessários.',
+        icon: ImgSad,
+      } 
+    }
+    else if(totalBalance === 0) {
+      return {
+        title: 'Ufaaa!',
+        description: 'Neste mês, você gastou exatamente o que ganhou.',
+        footerText: 'Tenha cuidado, no próximo mês tente poupar o seu dinheiro.',
+        icon: ImgHappy,
+      }
+    } else {
+      return {
+        title: 'Muito bem!',
+        description: 'Sua carteira está positiva!',
+        footerText: 'Continue Assim. Considere investir o seu saldo.',
+        icon: ImgHappy,
+      }
+    }
+
+  }, [totalBalance]);
+
   const handleMonthSelected = (month: string) => {
     try {
       const parseMonth = Number(month);
       setMonthSelected(parseMonth);
     }
-    catch(error){
+    catch {
       throw new Error('Invalid month value. Only accepts 0 to 24.')
     }
   }
@@ -63,7 +134,7 @@ const Dashboard: React.FC = () => {
       const parseYear = Number(year);
       setYearSelected(parseYear);
     }
-    catch(error){
+    catch {
       throw new Error('Invalid year value. Only accepts integer numbers.')
     }
   }
@@ -85,30 +156,30 @@ const Dashboard: React.FC = () => {
         <S.Content>
           <WalletBox 
             title="saldo"
-            amount={150.00}
+            amount={totalBalance}
             footerLabel="atualizado com base nas entradas e saídas"
             icon="dollar"
             color="#4E41F0"
           />
           <WalletBox 
             title="entradas"
-            amount={5000.00}
+            amount={totalGains}
             footerLabel="atualizado com base nas entradas e saídas"
             icon="arrowUp"
             color="#F7931B"
           />
           <WalletBox 
             title="saídas"
-            amount={4850.00}
+            amount={totalExpenses}
             footerLabel="atualizado com base nas entradas e saídas"
             icon="arrowDown"
             color="#E44C4E"
           />
           <MessageBox 
-            title="Muito bem!"
-            image={ImgHappy}
-            description="Sua carteira está positiva!"
-            footerText="Continue Assim. Considere investir o seu saldo."
+            title={message.title}
+            image={message.icon}
+            description={message.description}
+            footerText={message.footerText}
           />
         </S.Content>
     </S.Container>
