@@ -1,5 +1,5 @@
 # My Wallet
-Project in progress!
+:construction: Project in progress!
 
 ## Table of Contents
 * [Technologies](#technologies)
@@ -21,7 +21,7 @@ Project in progress!
 
 `yarn` or `yarn install`
 
-4. Start the development server:
+3. Start the development server:
 
 `yarn start`
 
