@@ -31,7 +31,7 @@ export const LabelContainer = styled.ul`
 
   max-height: 175px;
   padding-right: 15px;
-  overflow: scroll;
+  overflow-y: scroll;
 
   ::-webkit-scrollbar {
     width: 10px;
@@ -70,4 +70,7 @@ export const Label = styled.li<ILabelProps>`
 `;
 
 export const SideRight = styled.main`
+  display: flex;
+  flex: 1;
+  justify-content: center;
 `;
