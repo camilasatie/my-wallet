@@ -5,6 +5,7 @@ import SelectInput from '../../components/SelectInput';
 import WalletBox from '../../components/WalletBox';
 import MessageBox from '../../components/MessageBox';
 import PieChartBox from '../../components/PieChartBox';
+import HistoryBox from '../../components/HistoryBox';
 
 import expenses from '../../repositories/expenses';
 import gains from '../../repositories/gains';
@@ -143,7 +144,42 @@ const Dashboard: React.FC = () => {
 
     return data;
 
-  }, [totalGains, totalExpenses])
+  }, [totalGains, totalExpenses]);
+
+  const historyData = useMemo(() => {
+    return listOfMonths.map((_, month) => {
+      let amountEntry = 0;
+      let amountOutput = 0;
+
+      gains.forEach(gain => {
+        const date = new Date(gain.date);
+        const gainMonth = date.getMonth();
+        const gainYear = date.getFullYear();
+
+        if(gainMonth === month && gainYear === yearSelected) {
+          try {
+            amountEntry += Number(gain.amount);
+          } catch {
+            throw new Error('amountEntry is invalid. amountEntry must be a valid number.')
+          }
+        }
+      });
+
+      expenses.forEach(expense => {
+        const date = new Date(expense.date);
+        const expenseMonth = date.getMonth();
+        const expenseYear = date.getFullYear();
+
+        if(expenseMonth === month && expenseYear === yearSelected) {
+          try {
+            amountOutput += Number(expense.amount);
+          } catch {
+            throw new Error('amountOutput is invalid. amountOutput must be a valid number.')
+          }
+        }
+      });
+    })
+  },[]);
 
   const handleMonthSelected = (month: string) => {
     try {
@@ -208,6 +244,11 @@ const Dashboard: React.FC = () => {
             footerText={message.footerText}
           />
           <PieChartBox data={relationExpensesVersusGains}/>
+          <HistoryBox 
+            data={}
+            lineColorAmountEntry={}
+            lineColorAmountOutput={}
+          />
         </S.Content>
     </S.Container>
   );
