@@ -25,8 +25,9 @@ const HistoryBox: React.FC<IHistoryBoxProps> = ({
 }) =>(
   <S.Container>
     <h2>Histórico de Saldo</h2>
+
     <ResponsiveContainer>
-      <LineChart data={[]}>
+      <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="#cecece" />
         <XAxis dataKey="month" stroke="#cecece" />
         <Tooltip />

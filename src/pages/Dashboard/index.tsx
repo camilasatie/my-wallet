@@ -178,6 +178,13 @@ const Dashboard: React.FC = () => {
           }
         }
       });
+
+      return {
+        monthNumber: month,
+        month: listOfMonths[month].substr(0, 3),
+        amountEntry,
+        amountOutput,
+      }
     })
   },[]);
 
@@ -245,9 +252,9 @@ const Dashboard: React.FC = () => {
           />
           <PieChartBox data={relationExpensesVersusGains}/>
           <HistoryBox 
-            data={}
-            lineColorAmountEntry={}
-            lineColorAmountOutput={}
+            data={historyData}
+            lineColorAmountEntry="#e44c4e"
+            lineColorAmountOutput="#F7931B"
           />
         </S.Content>
     </S.Container>
