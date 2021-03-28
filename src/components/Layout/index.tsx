@@ -6,16 +6,14 @@ import Content from '../Content';
 
 import * as S from './styles';
 
-const Layout: React.FC = ({ children }) => {
-  return (
-    <S.Container>
-      <MainHeader />
-      <Aside />
-      <Content>
-        { children }
-      </Content>
-    </S.Container>
-  );
-}
+const Layout: React.FC = ({ children }) => (
+  <S.Container>
+    <MainHeader />
+    <Aside />
+    <Content>
+      { children }
+    </Content>
+  </S.Container>
+);
 
 export default Layout;
